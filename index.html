@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aurevia Estates | Fictional portfolio demonstration</title>
+<meta name="description" content="Aurevia Estates is a fictional luxury real estate brand created as a web design portfolio demonstration.">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#171916">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Aurevia Estates | Fictional luxury real estate portfolio demo">
+<meta property="og:description" content="A fictional luxury real estate brand created as a web design portfolio demonstration.">
+<meta property="og:image" content="https://YOUR-DOMAIN.com/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Manrope:wght@400;500;600&family=Pinyon+Script&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a href="#main" id="skip" class="ul" style="position:absolute;left:-999px;z-index:80;background:#171916;color:#F5F2EB;padding:8px 14px" onfocus="this.style.left='10px'" onblur="this.style.left='-999px'">Skip to content</a>
+<header id="hd">
+  <a href="#/" class="logo" aria-label="Aurevia Estates home">AUREVIA<small>ESTATES</small></a>
+  <nav id="nav" aria-label="Main">
+    <a href="#/">Home</a><a href="#/properties">Properties</a><a href="#/about">About</a><a href="#/services">Services</a><a href="#/journal">Journal</a><a href="#/contact" class="m">Contact</a>
+  </nav>
+  <div class="hr"><a href="#/contact" class="ul">Contact</a><a href="#/properties" class="btn">Explore Properties</a></div>
+  <button id="burger" aria-expanded="false" aria-controls="nav">Menu</button>
+</header>
+<main id="main"></main>
+<footer>
+  <div class="fg">
+    <div><a href="#/" class="logo">AUREVIA<small>ESTATES</small></a><p style="margin-top:20px;opacity:.75;max-width:34ch;font-size:.92rem">An advisory and brokerage for exceptional residences, architectural homes and considered investments.</p></div>
+    <div><h4>Explore</h4><ul><li><a href="#/">Home</a></li><li><a href="#/about">About</a></li><li><a href="#/journal">Journal</a></li><li><a href="#/contact">Contact</a></li></ul></div>
+    <div><h4>Properties</h4><ul><li><a href="#/properties/residence">Private Residences</a></li><li><a href="#/properties/villa">Architectural Villas</a></li><li><a href="#/properties/penthouse">Signature Penthouses</a></li></ul></div>
+    <div><h4>Services</h4><ul><li><a href="#/services">Residential Sales</a></li><li><a href="#/services">Investment Advisory</a></li><li><a href="#/services">Relocation</a></li></ul></div>
+    <div><h4>Newsletter</h4><form data-f="news" novalidate><div class="nl"><div style="flex:1"><label for="ne" class="cap">Email address</label><input id="ne" name="email" type="email" autocomplete="email" data-req></div><button class="btn" style="align-self:end">Subscribe</button></div><span class="err">Enter a valid email address.</span></form>
+    <p class="cap" style="margin-top:22px">+00 000 0000 (fictional)<br>hello@aurevia.example</p><p class="cap soc" style="margin-top:10px"><button type="button" class="ul" data-soc="Instagram">Instagram</button><button type="button" class="ul" data-soc="LinkedIn">LinkedIn</button><button type="button" class="ul" data-soc="Pinterest">Pinterest</button></p></div>
+  </div>
+  <div class="fb"><span>&copy; 2026 Aurevia Estates. A fictional brand.</span><span><a href="#/privacy" class="ul">Privacy policy</a> &nbsp; <a href="#/terms" class="ul">Terms and conditions</a></span></div>
+  <p class="cap" style="margin-top:14px">Portfolio demonstration only. Aurevia Estates, its listings, people, prices and contact details are fictional. Nothing on this site is a real offer, and no form submits data anywhere.</p>
+</footer>
+<div id="toast" role="status" aria-live="polite"></div>
+<button id="top" aria-label="Back to top">&uarr;</button>
+<script src="script.js"></script>
+</body>
+</html>
