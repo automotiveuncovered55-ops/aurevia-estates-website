@@ -46,6 +46,18 @@ const WA={number:'14155550123'};   // your real WhatsApp number
 
 The widget then opens `wa.me/<number>` with the visitor's message pre-filled. Replace the demo wording ("Demo chat", "(demo)") in `index.html` and `script.js` when you go live.
 
+## AI receptionist
+
+A "Talk to AI Receptionist" button in the header (and mobile menu) opens the chat panel on its **AI Receptionist** tab. It answers questions about the fictional listings (for example "villas in Dubai", "apartments under 4 million", "3 bedroom penthouse in Mumbai", "properties to rent"), private viewings, services and contact details, and links to the matching pages.
+
+It is a **scripted demo**, not a live AI: answers come from keyword rules in `script.js` (`aiReply`). To connect a real AI model, build a small server-side endpoint (for example a Vercel serverless function) that calls your AI provider with the API key stored as a server environment variable, then set:
+
+```js
+const AI={endpoint:'/api/receptionist'};   // receives {message, page}, returns {reply}
+```
+
+Never put an AI provider key in `script.js` or any other browser file. If the endpoint fails, the site falls back to the scripted answers.
+
 ## Things to know
 
 - **Navigation** uses `#/page` links (for example `/#/properties`), so the site works on any host without server settings. Search engines treat it as one page. For full per-page SEO, the site would need separate HTML files.

@@ -24,8 +24,9 @@
   <a href="#/" class="logo" aria-label="Aurevia Estates home">AUREVIA<small>ESTATES</small></a>
   <nav id="nav" aria-label="Main">
     <a href="#/">Home</a><a href="#/properties">Properties</a><a href="#/about">About</a><a href="#/services">Services</a><a href="#/journal">Journal</a><a href="#/contact" class="m">Contact</a>
+    <button type="button" class="nav-ai" data-ai>Talk to AI Receptionist</button>
   </nav>
-  <div class="hr"><a href="#/contact" class="ul">Contact</a><a href="#/properties" class="btn">Explore Properties</a></div>
+  <div class="hr"><a href="#/contact" class="ul">Contact</a><button type="button" class="ai-btn" data-ai><i></i><span><span class="pre">Talk to </span>AI Receptionist</span></button><a href="#/properties" class="btn">Explore Properties</a></div>
   <button id="burger" aria-expanded="false" aria-controls="nav">Menu</button>
 </header>
 <main id="main"></main>
@@ -42,11 +43,19 @@
   <p class="cap" style="margin-top:14px">Portfolio demonstration only. Aurevia Estates, its listings, people, prices and contact details are fictional. Nothing on this site is a real offer, and no form submits data anywhere.</p>
 </footer>
 <button id="wab" class="wab" type="button" aria-expanded="false" aria-controls="wap"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 20l1.3-4.2A8 8 0 1 1 8.4 18.8L4 20z"/><path d="M9 9.2c.3 2 2.7 4.6 5 5.3l1.3-1.2-1.7-1-.8.7c-.9-.4-1.7-1.2-2.1-2.1l.7-.8-1-1.7L9 9.2z" fill="currentColor" stroke="none"/></svg><span>WhatsApp</span></button>
-<section id="wap" class="wap" role="dialog" aria-label="WhatsApp chat (demo)" hidden>
-  <header><div><strong>Aurevia Concierge</strong><small>Demo chat. Replies are simulated.</small></div><button type="button" id="wax" aria-label="Close chat">&times;</button></header>
-  <div id="wam" class="wam" aria-live="polite"><p class="b bot">Hello, and welcome to Aurevia Estates. How may we help you today?</p></div>
-  <div class="chips"><button type="button" class="chip">I would like a private viewing</button><button type="button" class="chip">Tell me about investment options</button><button type="button" class="chip">I would like to speak with an advisor</button></div>
-  <form id="waf" novalidate><label for="wat" class="cap" style="display:block;margin-bottom:4px">Your message</label><div class="wr"><textarea id="wat" rows="2" placeholder="Type your message"></textarea><button class="btn fill" type="submit">Send</button></div></form>
+<section id="wap" class="wap" role="dialog" aria-label="Chat with Aurevia (demo)" hidden>
+  <header><div><strong id="wah">Aurevia Concierge</strong><small id="was">Demo chat. Replies are simulated.</small></div><button type="button" id="wax" aria-label="Close chat">&times;</button></header>
+  <div class="tabs" role="tablist"><button type="button" role="tab" id="tw" aria-selected="true" aria-controls="pwa">WhatsApp</button><button type="button" role="tab" id="ta" aria-selected="false" aria-controls="pai">AI Receptionist</button></div>
+  <div id="pwa" role="tabpanel" aria-labelledby="tw">
+    <div id="wam" class="wam" aria-live="polite"><p class="b bot">Hello, and welcome to Aurevia Estates. How may we help you today?</p></div>
+    <div class="chips"><button type="button" class="chip">I would like a private viewing</button><button type="button" class="chip">Tell me about investment options</button><button type="button" class="chip">I would like to speak with an advisor</button></div>
+    <form id="waf" novalidate><label for="wat" class="cap" style="display:block;margin-bottom:4px">Your message</label><div class="wr"><textarea id="wat" rows="2" placeholder="Type your message"></textarea><button class="btn fill" type="submit">Send</button></div></form>
+  </div>
+  <div id="pai" role="tabpanel" aria-labelledby="ta" hidden>
+    <div id="aim" class="wam" aria-live="polite"><p class="b bot">Hello, I am the Aurevia AI receptionist (a demo with scripted answers). Ask me about properties, private viewings or our services.</p></div>
+    <div class="chips"><button type="button" class="chip">Show villas in Dubai</button><button type="button" class="chip">Apartments under 4 million</button><button type="button" class="chip">Properties to rent</button><button type="button" class="chip">Book a private viewing</button></div>
+    <form id="aif" novalidate><label for="ait" class="cap" style="display:block;margin-bottom:4px">Ask a question</label><div class="wr"><textarea id="ait" rows="2" placeholder="For example: 3 bedroom penthouse in Mumbai"></textarea><button class="btn fill" type="submit">Ask</button></div></form>
+  </div>
 </section>
 <div id="toast" role="status" aria-live="polite"></div>
 <button id="top" aria-label="Back to top">&uarr;</button>

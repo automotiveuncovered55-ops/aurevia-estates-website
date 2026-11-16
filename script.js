@@ -85,18 +85,44 @@ function chk(i,f){const v=i.value.trim(),bad=!v||(i.type=='email'&&!/^\S+@\S+\.\
 function forms(){$$('form[data-f]').forEach(f=>{$$('[data-req]',f).forEach(i=>i.oninput=()=>{if(i.classList.contains('bad'))chk(i,f)});
 f.onsubmit=e=>{e.preventDefault();let ok=1;$$('[data-req]',f).forEach(i=>{if(!chk(i,f))ok=0});if(!ok){$('.bad',f).focus();return}
 const b=$('button',f);b.disabled=1;b.textContent='Sending...';setTimeout(()=>{f.outerHTML=`<div class="ok" role="status"><h3>${f.dataset.f=='news'?'Subscribed (demo)':'Thank you (demo)'}</h3><p class="cap">This is a simulated confirmation. Nothing was sent or stored, because this fictional site has no backend.</p></div>`},700)}})}
-function waOpen(t){const p=$('#wap'),i=$('#wat');p.hidden=false;$('#wab').setAttribute('aria-expanded',true);if(t||(!i.value&&waCtx))i.value=t||waCtx;i.focus()}
+function tabTo(n){const a=n=='ai';$('#pwa').hidden=a;$('#pai').hidden=!a;$('#tw').setAttribute('aria-selected',!a);$('#ta').setAttribute('aria-selected',a);$('#wah').textContent=a?'AI Receptionist':'Aurevia Concierge';$('#was').textContent=a?'Demo: scripted answers, not a live AI.':'Demo chat. Replies are simulated.';$('#wap').dataset.tab=n}
+function waOpen(t,n){const p=$('#wap'),i=$('#wat');p.hidden=false;$('#wab').setAttribute('aria-expanded',true);tabTo(n||p.dataset.tab||'wa');
+if(p.dataset.tab=='ai'){if(aiCtx&&!aiSeen[aiCtx.id]){aiSeen[aiCtx.id]=1;aiBub('bot','I see you are viewing '+aiCtx.n+'. Ask me about it, or say you would like a private viewing.')}$('#ait').focus()}
+else{if(t||(!i.value&&waCtx))i.value=t||waCtx;i.focus()}}
+const AI={endpoint:''},aiSeen={};let aiCtx=null;
+function aiBub(cls,t,links){const m=$('#aim'),p=document.createElement('p');p.className='b '+cls;p.textContent=t;(links||[]).forEach(l=>{const a=document.createElement('a');a.href=l[1];a.textContent=l[0];a.className='ul';a.style.cssText='display:block;margin-top:6px';p.appendChild(a)});m.appendChild(p);m.scrollTop=m.scrollHeight;return p}
+function aiReply(q){const s=q.toLowerCase(),has=r=>r.test(s);
+const city=['dubai','mumbai','london','singapore','marbella','goa'].find(c=>s.includes(c)),rent=has(/\b(rent|rental|lease|per month)\b/),buy=has(/\b(buy|purchase|for sale|sale)\b/),
+tk=has(/villa/)?'villa':has(/penthouse/)?'penthouse':has(/apartment|flat/)?'apartment':has(/residence|house|townhouse|mansion/)?'residence':'',
+bm=s.match(/(?:under|below|less than|up to|max(?:imum)?)\s*\$?\s*([\d.,]+)\s*(m\b|million|k\b|thousand)?/),bd=s.match(/(\d)\s*[+-]?\s*(?:bed|bedroom|br)\b/);
+if(aiCtx&&has(/\b(this|it)\b.*\b(property|home|residence|villa|penthouse|apartment|house)\b|about it|tell me more/))return [aiCtx.n+' is a '+T[aiCtx.t].toLowerCase()+' in '+aiCtx.loc+' with '+aiCtx.bd+' bedrooms, '+aiCtx.ba+' bathrooms and '+aiCtx.sf.toLocaleString()+' sq ft, listed at '+money(aiCtx)+'. Would you like a private viewing?',[['Book a private viewing','#/contact']]];
+if(has(/^\s*(hi|hello|hey|good (morning|afternoon|evening))\b/))return ['Hello, and welcome to Aurevia Estates. Try asking for "villas in Dubai" or "apartments under 4 million".',[]];
+if(has(/thank/))return ['You are most welcome. Is there anything else I can help with?',[]];
+if(has(/\b(hours|opening|address|office|phone|email|contact|located|where)\b/))return ['Our fictional office is at 12 Meridian Court, Example Quarter, Nowhere City. Hours: Monday to Friday 9:00 to 18:00, Saturday by appointment.',[['Contact page','#/contact']]];
+if(has(/\b(view|viewing|visit|tour|appointment|book|schedule)\b/))return ['I would be glad to arrange a private viewing. Please send your name, email and preferred dates through the contact form and an advisor will follow up. (This is a demo, so nothing is actually sent.)',[['Open the contact form','#/contact']]];
+if(has(/\b(invest|yield|roi|portfolio)\b/))return ['Our investment advisory covers market intelligence, portfolio planning and exit strategy across all six of our cities.',[['Investment advisory','#/services']]];
+if(has(/\b(service|sell|selling|relocat|marketing)\b/))return ['We offer residential sales, luxury acquisition, investment advisory, property marketing, relocation assistance and private consultations.',[['Our services','#/services']]];
+if(has(/\b(human|person|advisor|agent|whatsapp|speak|talk)\b/))return ['You can reach an advisor from the WhatsApp tab above, or through the contact form.',[['Contact page','#/contact']]];
+const im=s.match(/\bin\s+([a-z]+)/);if(!city&&im&&!['the','a','an','my','your','this','that','budget','terms','order','case','general','rent','buy','sale','luxury','price','stock','total'].includes(im[1]))return ['We currently have properties in Dubai, Mumbai, London, Singapore, Marbella and Goa.',[['Browse all properties','#/properties']]];
+if(city||tk||bm||bd||rent||buy||has(/\b(show|find|list|looking|available|propert|listing|homes?)\b/)){let L=P.slice();
+if(city)L=L.filter(p=>p.loc.toLowerCase().includes(city));if(tk)L=L.filter(p=>p.t==tk);if(rent)L=L.filter(p=>p.m=='rent');else if(buy)L=L.filter(p=>p.m=='buy');
+if(bm){let n=parseFloat(bm[1].replace(/,/g,''));const u=bm[2]||'';n*=/^m/.test(u)?1e6:/^(k|thousand)/.test(u)?1e3:(n<1000&&!rent?1e6:1);L=L.filter(p=>p.pr<=n);if(n>=1e5&&!rent)L=L.filter(p=>p.m=='buy')}
+if(bd)L=L.filter(p=>p.bd>=+bd[1]);
+if(!L.length)return ['I could not find a match for that. Try another city, budget or property type, or browse everything.',[['Browse all properties','#/properties']]];
+return [(L.length>3?'Here are 3 of '+L.length+' matches:':'Here '+(L.length==1?'is 1 match:':'are '+L.length+' matches:')),L.slice(0,3).map(p=>[p.n+', '+p.loc+' ('+money(p)+')','#/property/'+p.id]).concat(L.length>3?[['See all properties','#/properties']]:[])]}
+return ['I am a demo receptionist, so I can help with property searches (try "villas in Dubai" or "3 bedroom penthouse"), private viewings, services and contact details.',[]]}
+function aiAsk(q){if(AI.endpoint)return fetch(AI.endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:q,page:cur})}).then(r=>r.json()).then(r=>[r.reply,[]]).catch(()=>aiReply(q));return Promise.resolve(aiReply(q))}
 function waClose(){$('#wap').hidden=true;$('#wab').setAttribute('aria-expanded',false)}
 function waBub(cls,t){const m=$('#wam'),p=document.createElement('p');p.className='b '+cls;p.textContent=t;m.appendChild(p);m.scrollTop=m.scrollHeight}
 function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('v');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('v'),3200)}
 function menu(o){$('#nav').classList.toggle('open',o);$('#burger').setAttribute('aria-expanded',o);$('#burger').textContent=o?'Close':'Menu';document.body.classList.toggle('lock',o)}
-function route(){const wi=$('#wat');if(wi&&waCtx&&wi.value===waCtx)wi.value='';waCtx='';const h=(cur.slice(1)||'').split('?')[0],[a,b]=h.split('/'),m=$('#main');let html,title='Home',hv=['','about','property'].includes(a||'');
+function route(){const wi=$('#wat');if(wi&&waCtx&&wi.value===waCtx)wi.value='';waCtx='';aiCtx=null;const h=(cur.slice(1)||'').split('?')[0],[a,b]=h.split('/'),m=$('#main');let html,title='Home',hv=['','about','property'].includes(a||'');
 if(!a)html=V.home();else if(a=='properties'){html=V.properties(b);title='Properties'}else if(a=='property'){html=V.property(b);title='Property'}else if(a=='about'){html=V.about();title='About'}else if(a=='services'){html=V.services();title='Services'}else if(a=='journal'){html=b?V.article(b):V.journal('All');title='Journal'}else if(a=='contact'){html=V.contact();title='Contact'}else if(a=='privacy'||a=='terms'){html=V.legal(a=='privacy'?'Privacy policy':'Terms and conditions');title=a}else{html=V.nf();hv=1;title='Page not found'}
 if(a=='property'&&!P.find(p=>p.id==b))hv=1;
 m.innerHTML=html;document.title=title+' | Aurevia Estates (fictional demo)';document.documentElement.dataset.hero=hv?1:0;scrollTo(0,0);
 $$('#nav a').forEach(l=>l.classList.toggle('on',l.getAttribute('href')=='#/'+(a=='property'?'properties':a||'')));menu(false);
 if(a=='properties')initProps(b);forms();hdr();
-if(a=='property'){const p=P.find(x=>x.id==b);if(p){let cur=0;const vs=$$('.th button'),show=v=>{cur=(v+vs.length)%vs.length;const l=vs[cur].ariaLabel.replace('Show ','');$('#gm').innerHTML=pic(p,cur,l);vs.forEach((x,k)=>x.classList.toggle('on',k==cur));$('#gc').textContent=l+' (AI-generated image of a fictional property)'};vs.forEach((t,k)=>t.onclick=()=>show(k));$('.gb.p').onclick=()=>show(cur-1);$('.gb.n').onclick=()=>show(cur+1);$('#msg').value="I am interested in "+p.n+" ("+p.ref+").";waCtx="Hello, I am interested in "+p.n+" ("+p.ref+"). Could we arrange a private viewing?"}}
+if(a=='property'){const p=P.find(x=>x.id==b);if(p){let cur=0;const vs=$$('.th button'),show=v=>{cur=(v+vs.length)%vs.length;const l=vs[cur].ariaLabel.replace('Show ','');$('#gm').innerHTML=pic(p,cur,l);vs.forEach((x,k)=>x.classList.toggle('on',k==cur));$('#gc').textContent=l+' (AI-generated image of a fictional property)'};vs.forEach((t,k)=>t.onclick=()=>show(k));$('.gb.p').onclick=()=>show(cur-1);$('.gb.n').onclick=()=>show(cur+1);$('#msg').value="I am interested in "+p.n+" ("+p.ref+").";waCtx="Hello, I am interested in "+p.n+" ("+p.ref+"). Could we arrange a private viewing?";aiCtx=p}}
 if(a=='services')$$('[data-i]').forEach(x=>x.onclick=()=>{pre={svc:x.dataset.i}});
 if(a=='contact'&&pre.svc){$('#msg').value="I would like to enquire about "+pre.svc+".";$('#it').selectedIndex={'Residential Sales':1,'Luxury Property Acquisition':0,'Property Investment Advisory':2}[pre.svc]??3;pre={}}
 $$('.fi button').forEach(c=>c.onclick=()=>{m.innerHTML=V.journal(c.dataset.c);route.rebind()});
@@ -110,17 +136,21 @@ function go(p){cur=p;try{history.pushState(null,'','#'+p)}catch(e){}doRoute()}
 document.addEventListener('click',e=>{const a=e.target.closest&&e.target.closest('a[href^="#/"]');if(!a||e.defaultPrevented||e.metaKey||e.ctrlKey||e.shiftKey||e.button)return;e.preventDefault();go(a.getAttribute('href').slice(1))});
 addEventListener('hashchange',()=>{const n=location.hash.startsWith('#/')?location.hash.slice(1):'/';if(n!==cur){cur=n;doRoute()}});
 $('#burger').onclick=()=>menu(!$('#nav').classList.contains('open'));
-$('#nav').onclick=e=>{if(e.target.closest('a'))menu(false)};
+$('#nav').onclick=e=>{if(e.target.closest('a,.nav-ai'))menu(false)};
 addEventListener('keydown',e=>{if(e.key=='Escape')menu(false)});
 $('#skip').onclick=e=>{e.preventDefault();const m=$('#main');m.setAttribute('tabindex','-1');m.focus()};
 $$('[data-soc]').forEach(b=>b.onclick=()=>toast(b.dataset.soc+' is a demo link: this fictional brand has no social profile.'));
-$('#wab').onclick=()=>$('#wap').hidden?waOpen():waClose();$('#wax').onclick=waClose;
+$('#wab').onclick=()=>$('#wap').hidden?waOpen(null,'wa'):waClose();$('#wax').onclick=waClose;
+$('#tw').onclick=()=>tabTo('wa');$('#ta').onclick=()=>waOpen(null,'ai');
 $$('#wap .chip').forEach(c=>c.onclick=()=>{$('#wat').value=c.textContent;$('#wat').focus()});
 $('#waf').onsubmit=e=>{e.preventDefault();const i=$('#wat'),t=i.value.trim();i.classList.toggle('bad',!t);if(!t){i.focus();return}
 waBub('me',t);i.value='';
 if(WA.number){window.open('https://wa.me/'+WA.number+'?text='+encodeURIComponent(t),'_blank','noopener');waBub('bot','Opening WhatsApp in a new tab to continue this conversation.')}
 else setTimeout(()=>waBub('bot','This is a demo chat, so your message was not sent. Add a WhatsApp number in script.js to go live.'),700)};
-document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-wa]');if(b)waOpen()});
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-wa]'),a=e.target.closest&&e.target.closest('[data-ai]');if(a){menu(false);waOpen(null,'ai')}else if(b)waOpen(null,'wa')});
 addEventListener('keydown',e=>{if(e.key=='Escape')waClose()});
+$$('#pai .chip').forEach(c=>c.onclick=()=>{$('#ait').value=c.textContent;$('#ait').focus()});
+$('#aif').onsubmit=e=>{e.preventDefault();const i=$('#ait'),q=i.value.trim();i.classList.toggle('bad',!q);if(!q){i.focus();return}
+aiBub('me',q);i.value='';const tp=aiBub('bot','Typing...');Promise.all([aiAsk(q),new Promise(r=>setTimeout(r,650))]).then(([r])=>{tp.remove();aiBub('bot',r[0],r[1])})};
 $('#top').onclick=()=>scrollTo({top:0,behavior:'smooth'});
 route();
