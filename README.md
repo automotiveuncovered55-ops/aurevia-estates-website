@@ -34,6 +34,18 @@ Search for `YOUR-DOMAIN.com` in `index.html`, `robots.txt` and `sitemap.xml`, an
 
 **Traditional hosting (cPanel / FTP):** upload everything into `public_html` (or your site's root folder). `_headers`, `vercel.json` and `.nojekyll` are ignored there and can be left out.
 
+## WhatsApp chat widget
+
+A floating "WhatsApp" button (bottom-left) opens a chat panel with quick-reply chips. It also appears on the Contact page and on every property page, where the message is pre-filled with the property name and reference.
+
+It runs in **demo mode** by default: messages are simulated and nothing is sent. To go live, open `script.js` and set your number at the top, in international format with digits only:
+
+```js
+const WA={number:'14155550123'};   // your real WhatsApp number
+```
+
+The widget then opens `wa.me/<number>` with the visitor's message pre-filled. Replace the demo wording ("Demo chat", "(demo)") in `index.html` and `script.js` when you go live.
+
 ## Things to know
 
 - **Navigation** uses `#/page` links (for example `/#/properties`), so the site works on any host without server settings. Search engines treat it as one page. For full per-page SEO, the site would need separate HTML files.
